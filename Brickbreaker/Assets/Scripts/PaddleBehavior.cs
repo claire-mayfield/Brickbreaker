@@ -4,6 +4,7 @@ using UnityEngine;
 public class PaddleBehavior : MonoBehaviour
 {
     public float Speed = 5.0f;
+    public float xMin = -5.3f, xMax = 5.3f; 
 
     public KeyCode RightDirection;
     public KeyCode LeftDirection;
@@ -26,6 +27,15 @@ public class PaddleBehavior : MonoBehaviour
         {
             movement -= Speed;
         }
-            transform.position += new Vector3(movement * Time.deltaTime, 0.0f, 0.0f);
+
+        float xPos = Mathf.Clamp(movement * Time.deltaTime, xMin, xMax);
+        Vector3 currentPos = transform.position;
+        currentPos += new Vector3(xPos, 0.0f, 0.0f);
+
+        if (currentPos.x > -5.3 && currentPos.x < 5.3)
+        {
+           transform.position += new Vector3(xPos, 0.0f, 0.0f);  
+        }
+            
     }
 }

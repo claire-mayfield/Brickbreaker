@@ -1,17 +1,33 @@
-// We are using a mainspace which is like a library. The library has a bunch of things implemented within it. One of these things is MonoBehavior.
 using UnityEngine;
-// PaddleBehavior is the name we assigned to the class. Public class is our acces modifier. Everything in this game can access this script.  
+using UnityEngine.Audio;
+
 public class PaddleBehavior : MonoBehaviour
 {
     public float Speed = 5.0f;
-    public float xMin = -5.3f, xMax = 5.3f; 
+    public float xMin = -5.3f, xMax = 5.3f;
 
     public KeyCode RightDirection;
     public KeyCode LeftDirection;
 
+    private AudioSource _source;
+    [SerializeField] private AudioClip _paddle;
+
     void Start()
     {
-        
+
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            _source.clip = _paddle;
+            Debug.Log(_paddle);
+            _source.enabled = true;
+            _source.volume = 1f;
+            _source.Play();
+            Debug.Log("Is Playing? " + _source.isPlaying);
+        }
     }
 
     // Update is called once per frame
@@ -37,8 +53,9 @@ public class PaddleBehavior : MonoBehaviour
 
         if (currentPos.x > -5.3 && currentPos.x < 5.3)
         {
-           transform.position += new Vector3(xPos, 0.0f, 0.0f);  
+            transform.position += new Vector3(xPos, 0.0f, 0.0f);
         }
-            
+
     }
+
 }

@@ -19,6 +19,11 @@ public class BallBehavior : MonoBehaviour
         _rb.AddForce(direction * _launchForce, ForceMode2D.Impulse);
     }
 
+    private void Update()
+    {
+        _rb.simulated = Manager.Instance.State != Utilities.GameState.Pause;
+    }
+
     void OnCollisionEnter2D(Collision2D other)
     {
             if (!Mathf.Approximately(other.rigidbody.linearVelocity.y, 0.0f))

@@ -7,6 +7,17 @@ public class Manager : MonoBehaviour
 {
     public static Manager Instance;
 
+    private Utilities.GameState _state;
+    public Utilities.GameState State
+    {
+        get => _state;
+        set
+        {
+            _state = value;
+            _messagesUI.enabled = State == Utilities.GameState.Pause;
+        }
+    }
+
     [SerializeField] private TMP_Text _scoreUI;
 
     private int _score = 0;
@@ -23,6 +34,8 @@ public class Manager : MonoBehaviour
             _scoreUI.text = Score.ToString();
         }
     }
+
+     [SerializeField] private TMP_Text _messagesUI;
 
     private void Awake()
     {
@@ -46,6 +59,22 @@ public class Manager : MonoBehaviour
 
     void Start()
     {
-        Instance.Score = 25;
+        Instance.Score = 0;
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            State = State == Utilities.GameState.Play ?
+                Utilities.GameState.Pause :
+                Utilities.GameState.Play;
+        }
+    }
+
+    public void ScorePoint()
+    {
+        Score++;
+    }
+    
 }

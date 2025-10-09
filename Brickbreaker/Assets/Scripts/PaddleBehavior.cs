@@ -18,14 +18,17 @@ public class PaddleBehavior : MonoBehaviour
     void Update()
     {
         float movement = 0.0f;
-        if (Input.GetKey(RightDirection))
+        if (Manager.Instance.State == Utilities.GameState.Play)
         {
-            movement += Speed;
-        }
+            if (Input.GetKey(RightDirection))
+            {
+                movement += Speed;
+            }
 
-        else if (Input.GetKey(LeftDirection))
-        {
-            movement -= Speed;
+            else if (Input.GetKey(LeftDirection))
+            {
+                movement -= Speed;
+            }
         }
 
         float xPos = Mathf.Clamp(movement * Time.deltaTime, xMin, xMax);

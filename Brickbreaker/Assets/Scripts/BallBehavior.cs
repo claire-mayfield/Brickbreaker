@@ -6,8 +6,13 @@ public class BallBehavior : MonoBehaviour
     [SerializeField] private float _launchForce = 5.0f;
     [SerializeField] private float _paddleInfluence = 0.4f;
 
-    private AudioSource _source;
+    [SerializeField] private AudioClip _destroyBrick;
+
+    [SerializeField] private AudioClip _paddle;
+
     [SerializeField] private AudioClip _wall;
+
+    private AudioSource _source;
 
     private Rigidbody2D _rb;
 
@@ -48,6 +53,28 @@ public class BallBehavior : MonoBehaviour
                 _source.Play();
                 Debug.Log("Is Playing? " + _source.isPlaying);
         }
+
+        if (other.gameObject.CompareTag("GameOverZone"))
+        {
+            Manager.Instance.Score = 0;
+            ResetBall();
+        }
+
+    void ResetBall()
+    {
+        // Stop the ball
+        _rb.linearVelocity = Vector2.zero;
+        
+        // Recenter ball
+        transform.position = Vector3.zero;
+
+        Vector2 direction = new Vector2(
+            GetNonZeroRandomFloat(),
+            GetNonZeroRandomFloat()
+        ).normalized;
+
+        _rb.AddForce(direction * _launchForce, ForceMode2D.Impulse);
+    }
     }
     float GetNonZeroRandomFloat(float min = -1.0f, float max = 1.0f)
     {
